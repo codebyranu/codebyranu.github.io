@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Ranu Gupta - Technical Lead & React Native Developer</title>
+    <meta name="description" content="Insights on React Native, mobile development, and tech leadership by Ranu Gupta.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --accent: #06b6d4;
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --border: #334155;
+            --gradient-1: linear-gradient(135deg, #6366f1, #06b6d4);
+            --gradient-2: linear-gradient(135deg, #6366f1, #a855f7);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -2px rgba(0,0,0,0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.4), 0 4px 6px -4px rgba(0,0,0,0.3);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .nav-logo {
+            font-weight: 800; font-size: 1.4rem;
+            background: var(--gradient-1); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none; font-weight: 500;
+            font-size: 0.9rem; transition: color 0.3s; position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 2px; background: var(--gradient-1);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+
+        .hamburger {
+            display: none; cursor: pointer; flex-direction: column; gap: 5px;
+            background: none; border: none;
+        }
+
+        .hamburger span {
+            width: 24px; height: 2px; background: var(--text);
+            transition: all 0.3s;
+        }
+
+        /* ===== BLOG HERO ===== */
+        .blog-hero {
+            padding: 8rem 2rem 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .blog-hero::before {
+            content: ''; position: absolute; top: -30%; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .blog-hero h1 {
+            font-size: 3rem; font-weight: 800;
+            background: var(--gradient-1); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-hero p {
+            color: var(--text-muted); font-size: 1.1rem;
+            max-width: 560px; margin: 0 auto;
+        }
+
+        /* ===== FILTER TAGS ===== */
+        .filter-bar {
+            max-width: 1200px; margin: 0 auto 2rem;
+            padding: 0 2rem;
+            display: flex; gap: 0.6rem; flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-tag {
+            padding: 0.4rem 1rem; border-radius: 20px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            color: var(--text-muted); font-size: 0.82rem; font-weight: 500;
+            cursor: pointer; transition: all 0.3s;
+        }
+
+        .filter-tag:hover, .filter-tag.active {
+            background: rgba(99,102,241,0.15); border-color: var(--primary);
+            color: var(--primary-light);
+        }
+
+        /* ===== BLOG GRID ===== */
+        .blog-container {
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .blog-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 16px; overflow: hidden;
+            transition: all 0.3s; cursor: pointer;
+            position: relative;
+        }
+
+        .blog-card:hover {
+            border-color: var(--primary); transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .blog-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0;
+            height: 3px; background: var(--gradient-1); opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .blog-card:hover::before { opacity: 1; }
+
+        .blog-card-cover {
+            height: 180px; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3.5rem;
+        }
+
+        .cover-rn { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); }
+        .cover-arch { background: linear-gradient(135deg, #0f172a, #1e3a5f, #2d6187); }
+        .cover-perf { background: linear-gradient(135deg, #1a0a2e, #2d1b4e, #4a2c6e); }
+        .cover-lead { background: linear-gradient(135deg, #0a2e1a, #1b4e2d, #2c6e4a); }
+        .cover-cicd { background: linear-gradient(135deg, #2e1a0a, #4e2d1b, #6e4a2c); }
+        .cover-ai { background: linear-gradient(135deg, #0a1a2e, #1b2d4e, #2c4a6e); }
+        .cover-pay { background: linear-gradient(135deg, #1a2e0a, #2d4e1b, #4a6e2c); }
+        .cover-sec { background: linear-gradient(135deg, #2e0a0a, #4e1b1b, #6e2c2c); }
+        .cover-edge { background: linear-gradient(135deg, #0a2e2e, #1b4e4e, #2c6e6e); }
+        .cover-super { background: linear-gradient(135deg, #2e0a2e, #4e1b4e, #6e2c6e); }
+
+        .blog-card-body { padding: 1.5rem; }
+
+        .blog-card-meta {
+            display: flex; align-items: center; gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .blog-card-tag {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+            color: var(--accent); text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .blog-card-date { font-size: 0.78rem; color: var(--text-dim); }
+
+        .blog-card-title {
+            font-weight: 700; font-size: 1.15rem;
+            margin-bottom: 0.6rem; line-height: 1.4;
+        }
+
+        .blog-card-excerpt {
+            color: var(--text-muted); font-size: 0.9rem;
+            line-height: 1.6; margin-bottom: 1rem;
+            display: -webkit-box; -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        .blog-card-footer {
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .read-time {
+            font-size: 0.78rem; color: var(--text-dim);
+            display: flex; align-items: center; gap: 0.3rem;
+        }
+
+        .read-more {
+            font-size: 0.85rem; font-weight: 600; color: var(--primary-light);
+            text-decoration: none; transition: color 0.3s;
+            display: flex; align-items: center; gap: 0.3rem;
+        }
+
+        .read-more:hover { color: var(--accent); }
+
+        /* ===== BLOG POST VIEW ===== */
+        .blog-post-overlay {
+            display: none; position: fixed; inset: 0; z-index: 2000;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+            overflow-y: auto; padding: 2rem;
+        }
+
+        .blog-post-overlay.active { display: flex; justify-content: center; }
+
+        .blog-post-container {
+            background: var(--bg); border: 1px solid var(--border);
+            border-radius: 20px; max-width: 800px; width: 100%;
+            margin: auto; padding: 3rem; position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .blog-post-close {
+            position: absolute; top: 1.5rem; right: 1.5rem;
+            background: var(--bg-card); border: 1px solid var(--border);
+            color: var(--text-muted); width: 40px; height: 40px;
+            border-radius: 50%; cursor: pointer; font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .blog-post-close:hover {
+            background: var(--bg-card-hover); color: var(--text);
+        }
+
+        .blog-post-header { margin-bottom: 2rem; }
+
+        .blog-post-header .blog-card-tag { font-size: 0.8rem; }
+
+        .blog-post-header h2 {
+            font-size: 2rem; font-weight: 800; margin: 0.8rem 0;
+            line-height: 1.3;
+        }
+
+        .blog-post-header .post-meta {
+            display: flex; gap: 1.5rem; color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        .blog-post-content { color: var(--text-muted); font-size: 1rem; line-height: 1.85; }
+        .blog-post-content h3 { color: var(--text); font-size: 1.3rem; margin: 2rem 0 0.8rem; }
+        .blog-post-content p { margin-bottom: 1.2rem; }
+        .blog-post-content ul, .blog-post-content ol { margin: 0.8rem 0 1.2rem 1.5rem; }
+        .blog-post-content li { margin-bottom: 0.4rem; }
+
+        .blog-post-content code {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.88rem;
+            background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2);
+            padding: 0.15rem 0.5rem; border-radius: 6px; color: var(--primary-light);
+        }
+
+        .blog-post-content pre {
+            background: rgba(15,23,42,0.8); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1.2rem 1.5rem; margin: 1.2rem 0;
+            overflow-x: auto;
+        }
+
+        .blog-post-content pre code {
+            background: none; border: none; padding: 0;
+            font-size: 0.85rem; color: var(--text-muted);
+        }
+
+        .blog-post-content blockquote {
+            border-left: 3px solid var(--primary); padding-left: 1.2rem;
+            margin: 1.5rem 0; color: var(--text); font-style: italic;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center; padding: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim); font-size: 0.85rem;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in {
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-links.active {
+                display: flex; flex-direction: column;
+                position: absolute; top: 100%; left: 0; right: 0;
+                background: rgba(15,23,42,0.98); padding: 1.5rem 2rem;
+                border-bottom: 1px solid var(--border);
+            }
+            .blog-hero h1 { font-size: 2.2rem; }
+            .blog-grid { grid-template-columns: 1fr; }
+            .blog-post-container { padding: 1.5rem; margin: 1rem; }
+            .blog-post-header h2 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <div class="nav-inner">
+        <a href="https://codebyranu.github.io/" class="nav-logo">RG</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="https://codebyranu.github.io/#about">About</a></li>
+            <li><a href="https://codebyranu.github.io/#skills">Skills</a></li>
+            <li><a href="https://codebyranu.github.io/#experience">Experience</a></li>
+            <li><a href="https://codebyranu.github.io/#projects">Projects</a></li>
+            <li><a href="https://codebyranu.github.io/blog.html" class="active">Blog</a></li>
+            <li><a href="https://codebyranu.github.io/#contact">Contact</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Blog Hero -->
+<section class="blog-hero">
+    <h1>Blog</h1>
+    <p>Thoughts on React Native, mobile architecture, performance, and leading engineering teams.</p>
+</section>
+
+<!-- Filter Tags -->
+<div class="filter-bar">
+    <span class="filter-tag active" data-filter="all">All</span>
+    <span class="filter-tag" data-filter="react-native">React Native</span>
+    <span class="filter-tag" data-filter="architecture">Architecture</span>
+    <span class="filter-tag" data-filter="performance">Performance</span>
+    <span class="filter-tag" data-filter="leadership">Leadership</span>
+    <span class="filter-tag" data-filter="devops">DevOps</span>
+    <span class="filter-tag" data-filter="payments">Payments</span>
+    <span class="filter-tag" data-filter="security">Security</span>
+</div>
+
+<!-- Blog Grid -->
+<div class="blog-container">
+    <div class="blog-grid" id="blogGrid">
+
+        <!-- Post 1 -->
+        <article class="blog-card fade-in" data-category="react-native" data-post="1">
+            <div class="blog-card-cover cover-rn">⚛️</div>
+            <div class="blog-card-body">
+                <div class="blog-card-meta">
+                    <span class="blog-card-tag">React Native</span>
+                    <span class="blog-card-date">May 15, 2025</span>
+                </div>
+                <h3 class="blog-card-title">Why React Native Is Still the Best Bet for Cross-Platform in 2025</h3>
+                <p class="blog-card-excerpt">After building production apps for 9+ years, here's my honest take on why React Native continues to dominate — and where it still needs work.</p>
+                <div class="blog-card-footer">
+                    <span class="read-time">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        6 min read
+                    </span>
+                    <span class="read-more">Read &rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Post 2 -->
+        <article class="blog-card fade-in" data-category="architecture" data-post="2">
+            <div class="blog-card-cover cover-arch">🏗️</div>
+            <div class="blog-card-body">
+                <div class="blog-card-meta">
+                    <span class="blog-card-tag">Architecture</span>
+                    <span class="blog-card-date">Apr 28, 2025</span>
+                </div>
+                <h3 class="blog-card-title">Scaling a React Native App to 1M+ Users: Lessons from the Trenches</h3>
+                <p class="blog-card-excerpt">Real architectural decisions I made scaling CPay and Send2Corrections — from state management patterns to API layer design and offline-first strategies.</p>
+                <div class="blog-card-footer">
+                    <span class="read-time">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        8 min read
+                    </span>
+                    <span class="read-more">Read &rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Post 3 -->
+        <article class="blog-card fade-in" data-category="performance" data-post="3">
+            <div class="blog-card-cover cover-perf">⚡</div>
+            <div class="blog-card-body">
+                <div class="blog-card-meta">
+                    <span class="blog-card-tag">Performance</span>
+                    <span class="blog-card-date">Mar 12, 2025</span>
+                </div>
+                <h3 class="blog-card-title">I Cut Our App's Load Time by 40% — Here's How</h3>
+                <p class="blog-card-excerpt">A practical deep-dive into Hermes optimization, lazy loading native modules, image caching strategies, and profiling tools that actually work.</p>
+                <div class="blog-card-footer">
+                    <span class="read-time">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        7 min read
+                    </span>
+                    <span class="read-more">Read &rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Post 4 -->
+        <article class="blog-card fade-in" data-category="leadership" data-post="4">
+            <div class="blog-card-cover cover-lead">👥</div>
+            <div class="blog-card-body">
+                <div class="blog-card-meta">
+                    <span class="blog-card-tag">Leadership</span>
+                    <span class="blog-card-date">Feb 20, 2025</span>
+                </div>
+                <h3 class="blog-card-title">From Senior Dev to Tech Lead: What Nobody Tells You</h3>
+                <p class="blog-card-excerpt">The transition from writing code to leading a team of 8 engineers. Code reviews, mentoring, stakeholder management — and letting go of the keyboard.</p>
+                <div class="blog-card-footer">
+                    <span class="read-time">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        5 min read
+                    </span>
+                    <span class="read-more">Read &rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Post 5 -->
+        <article class="blog-card fade-in" data-category="devops" data-post="5">
+            <div class="blog-card-cover cover-cicd">🔄</div>
+            <div class="blog-card-body">
+                <div class="blog-card-meta">
+                    <span class="blog-card-tag">DevOps</span>
+                    <span class="blog-card-date">Jan 30, 2025</span>
+                </div>
+                <h3 class="blog-card-title">CI/CD for React Native: Our Pipeline That Deploys in Under 10 Minutes</h3>
+                <p class="blog-card-excerpt">Setting up GitHub Actions with Fastlane for automated builds, testing, and deployment to both App Store and Play Store simultaneously.</p>
+                <div class="blog-card-footer">
+                    <span class="read-time">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        6 min read
+                    </span>
+                    <span class="read-more">Read &rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Post 6 -->
+        <article class="blog-card fade-in" data-category="react-native" data-post="6">
+            <div class="blog-card-cover cover-ai">🤖</div>
+            <div class="blog-card-body">
+                <div class="blog-card-meta">
+                    <span class="blog-card-tag">React Native</span>
+                    <span class="blog-card-date">Jan 5, 2025</span>
+                </div>
+                <h3 class="blog-card-title">Integrating On-Device ML Into Your React Native App</h3>
+                <p class="blog-card-excerpt">A step-by-step guide to adding TensorFlow Lite models for real-time image classification and text analysis in React Native with native bridges.</p>
+                <div class="blog-card-footer">
+                    <span class="read-time">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        9 min read
+                    </span>
+                    <span class="read-more">Read &rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Post 7 -->
+        <article class="blog-card fade-in" data-category="payments" data-post="7">
+            <div class="blog-card-cover cover-pay">💳</div>
+            <div class="blog-card-body">
+                <div class="blog-card-meta">
+                    <span class="blog-card-tag">Payments</span>
+                    <span class="blog-card-date">May 28, 2025</span>
+                </div>
+                <h3 class="blog-card-title">Building PCI-Compliant Payment Flows in React Native: The Complete Guide</h3>
+                <p class="blog-card-excerpt">How we built Western Union's CPay payment system — tokenization, 3D Secure, biometric auth, and why you should never store card data on-device.</p>
+                <div class="blog-card-footer">
+                    <span class="read-time">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        10 min read
+                    </span>
+                    <span class="read-more">Read &rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Post 8 -->
+        <article class="blog-card fade-in" data-category="react-native" data-post="8">
+            <div class="blog-card-cover cover-super">🧩</div>
+            <div class="blog-card-body">
+                <div class="blog-card-meta">
+                    <span class="blog-card-tag">React Native</span>
+                    <span class="blog-card-date">May 22, 2025</span>
+                </div>
+                <h3 class="blog-card-title">React Native's New Architecture in Production: A 6-Month Retrospective</h3>
+                <p class="blog-card-excerpt">Fabric, TurboModules, and the Bridgeless mode — what actually improved, what broke, and the migration strategy that saved us from rewriting everything.</p>
+                <div class="blog-card-footer">
+                    <span class="read-time">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        8 min read
+                    </span>
+                    <span class="read-more">Read &rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Post 9 -->
+        <article class="blog-card fade-in" data-category="security" data-post="9">
+            <div class="blog-card-cover cover-sec">🔐</div>
+            <div class="blog-card-body">
+                <div class="blog-card-meta">
+                    <span class="blog-card-tag">Security</span>
+                    <span class="blog-card-date">May 10, 2025</span>
+                </div>
+                <h3 class="blog-card-title">Securing Fintech Apps: Biometrics, Certificate Pinning, and Runtime Tampering Detection</h3>
+                <p class="blog-card-excerpt">The security playbook I follow for every financial app — from jailbreak detection to encrypted local storage and real-time fraud signal collection.</p>
+                <div class="blog-card-footer">
+                    <span class="read-time">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        9 min read
+                    </span>
+                    <span class="read-more">Read &rarr;</span>
+                </div>
+            </div>
+        </article>
+
+        <!-- Post 10 -->
+        <article class="blog-card fade-in" data-category="payments" data-post="10">
+            <div class="blog-card-cover cover-edge">🌍</div>
+            <div class="blog-card-body">
+                <div class="blog-card-meta">
+                    <span class="blog-card-tag">Payments</span>
+                    <span class="blog-card-date">Apr 15, 2025</span>
+                </div>
+                <h3 class="blog-card-title">Cross-Border Payments UX: Designing for Emerging Markets</h3>
+                <p class="blog-card-excerpt">Building payment UIs for users with low bandwidth, small screens, and multiple currencies — real patterns from Western Union's global remittance app.</p>
+                <div class="blog-card-footer">
+                    <span class="read-time">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        7 min read
+                    </span>
+                    <span class="read-more">Read &rarr;</span>
+                </div>
+            </div>
+        </article>
+
+    </div>
+</div>
+
+<!-- Blog Post Overlay -->
+<div class="blog-post-overlay" id="postOverlay">
+    <div class="blog-post-container">
+        <button class="blog-post-close" id="postClose">&times;</button>
+        <div class="blog-post-header" id="postHeader"></div>
+        <div class="blog-post-content" id="postContent"></div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    &copy; 2025 Ranu Gupta. Built with passion for mobile development.
+</footer>
+
+<script>
+    // Mobile menu
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
+    navLinks.querySelectorAll('a').forEach(link =>
+        link.addEventListener('click', () => navLinks.classList.remove('active'))
+    );
+
+    // Scroll animations
+    const observer = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+        { threshold: 0.1 }
+    );
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Filter tags
+    const filterTags = document.querySelectorAll('.filter-tag');
+    const blogCards = document.querySelectorAll('.blog-card');
+
+    filterTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+            filterTags.forEach(t => t.classList.remove('active'));
+            tag.classList.add('active');
+            const filter = tag.dataset.filter;
+            blogCards.forEach(card => {
+                if (filter === 'all' || card.dataset.category === filter) {
+                    card.style.display = '';
+                    setTimeout(() => card.classList.add('visible'), 50);
+                } else {
+                    card.style.display = 'none';
+                    card.classList.remove('visible');
+                }
+            });
+        });
+    });
+
+    // Blog post data
+    const posts = {
+        1: {
+            tag: 'React Native',
+            title: 'Why React Native Is Still the Best Bet for Cross-Platform in 2025',
+            date: 'May 15, 2025',
+            readTime: '6 min read',
+            content: `
+                <p>Nine years ago, when I first picked up React Native, the ecosystem was rough. Debugging was painful, performance was questionable, and every other week someone would publish a "React Native is dead" article. Fast forward to 2025, and here I am — still building with it, still loving it.</p>
+
+                <h3>The New Architecture Changed Everything</h3>
+                <p>The introduction of Fabric and TurboModules wasn't just an incremental update — it fundamentally changed what's possible. The new rendering pipeline eliminates the bridge bottleneck that plagued complex animations and heavy UI interactions.</p>
+                <p>In our CPay app at Western Union, we saw a <strong>35% improvement in frame rates</strong> on mid-range Android devices after migrating to the new architecture. That's not a micro-benchmark — that's real users scrolling through transaction histories.</p>
+
+                <h3>The Ecosystem Is Mature Now</h3>
+                <p>Libraries like <code>react-native-reanimated</code>, <code>react-native-gesture-handler</code>, and <code>expo-router</code> have reached a level of stability that would have been unimaginable five years ago. You can build genuinely complex UIs — gesture-driven navigation, shared element transitions, 60fps animations — without dropping into native code.</p>
+
+                <h3>Where It Still Falls Short</h3>
+                <p>I won't pretend it's perfect. Heavy computational tasks, complex Canvas/WebGL rendering, and certain Bluetooth LE workflows still require native modules. The startup time on lower-end Android devices, while improved, still lags behind a well-optimized native app.</p>
+
+                <blockquote>The question isn't "React Native vs Native" — it's "what's the fastest path to a great user experience with a sustainable team?"</blockquote>
+
+                <h3>My Recommendation</h3>
+                <p>If you're building a business app, a fintech product, or any content-driven mobile experience — React Native is the right call. You get 90% of native performance with 50% of the engineering cost. And with the talent pool growing every year, hiring is significantly easier than finding senior iOS + Android engineers.</p>
+            `
+        },
+        2: {
+            tag: 'Architecture',
+            title: 'Scaling a React Native App to 1M+ Users: Lessons from the Trenches',
+            date: 'Apr 28, 2025',
+            readTime: '8 min read',
+            content: `
+                <p>When I joined the Western Union CPay project, the app had around 50K active users. By the time our team had finished the rebuild, we were serving over a million. Here's what I learned about scaling React Native apps the hard way.</p>
+
+                <h3>State Management: Redux Is Not the Enemy</h3>
+                <p>I've seen teams jump to every new state management library that appears on Twitter. We stuck with Redux Toolkit + RTK Query, and it was the right call. The predictability, the devtools, the middleware ecosystem — at scale, boring is good.</p>
+                <p>The key was being disciplined about what goes into global state versus local component state. Our rule: <strong>if it needs to survive a navigation event, it's global. Otherwise, it's local.</strong></p>
+
+                <h3>API Layer Design</h3>
+                <p>We built an API layer with three priorities:</p>
+                <ol>
+                    <li><strong>Offline-first:</strong> Every critical flow works without connectivity. Transactions queue locally and sync when the connection returns.</li>
+                    <li><strong>Optimistic updates:</strong> The UI responds instantly; the network catches up.</li>
+                    <li><strong>Request deduplication:</strong> Aggressive caching and dedup prevent redundant calls, which matters enormously on slow networks.</li>
+                </ol>
+
+                <h3>Code Splitting and Lazy Loading</h3>
+                <p>Our app grew to 200+ screens. Without code splitting, the initial bundle was approaching 15MB. We implemented:</p>
+                <pre><code>const PaymentScreen = React.lazy(
+  () => import('./screens/PaymentScreen')
+);
+
+// Wrapped in Suspense with a skeleton loader
+&lt;Suspense fallback={&lt;PaymentSkeleton /&gt;}&gt;
+  &lt;PaymentScreen /&gt;
+&lt;/Suspense&gt;</code></pre>
+                <p>This, combined with Hermes bytecode precompilation, brought our cold start from 4.2s to 2.5s on median Android devices.</p>
+
+                <h3>The Takeaway</h3>
+                <p>Scaling isn't about picking the "right" technology — it's about making hundreds of small, disciplined decisions. Measure everything, optimize what matters, and resist the urge to rewrite when a focused fix will do.</p>
+            `
+        },
+        3: {
+            tag: 'Performance',
+            title: 'I Cut Our App\'s Load Time by 40% — Here\'s How',
+            date: 'Mar 12, 2025',
+            readTime: '7 min read',
+            content: `
+                <p>Our app's cold start was taking 4.2 seconds on a Pixel 4a. Users were dropping off before they even saw the home screen. I spent two weeks profiling, optimizing, and measuring — and got it down to 2.5 seconds. Here's the playbook.</p>
+
+                <h3>Step 1: Measure Before You Optimize</h3>
+                <p>I used <code>react-native-performance</code> to establish baselines across 15 different device profiles. The biggest surprise? 60% of our startup time was spent initializing modules we didn't need on the first screen.</p>
+
+                <h3>Step 2: Hermes — But Actually Configure It</h3>
+                <p>Most teams enable Hermes and move on. We went further: custom bytecode precompilation profiles, inline caching tuning, and garbage collection threshold adjustments. The GC tuning alone saved 300ms on low-memory devices.</p>
+
+                <h3>Step 3: Kill the Waterfall</h3>
+                <p>Our splash screen was waiting for: auth token validation → user profile fetch → feature flags → home screen data. We parallelized everything that didn't have a hard dependency:</p>
+                <pre><code>await Promise.all([
+  validateToken(),
+  prefetchFeatureFlags(),
+  warmImageCache(criticalImages),
+]);
+// Only profile fetch waits for token
+const profile = await fetchProfile();</code></pre>
+
+                <h3>Step 4: Image Pipeline Overhaul</h3>
+                <p>We switched from the default Image component to <code>react-native-fast-image</code> with aggressive prefetching. Profile photos, icons, and recurring UI assets are cached on first launch and never re-downloaded.</p>
+
+                <h3>The Results</h3>
+                <p>Cold start: 4.2s → 2.5s. Screen transition (home → detail): 180ms → 60ms. Memory usage on Android: down 22%. User retention in the first week: up 11%. Performance isn't a feature — it's the foundation every other feature depends on.</p>
+            `
+        },
+        4: {
+            tag: 'Leadership',
+            title: 'From Senior Dev to Tech Lead: What Nobody Tells You',
+            date: 'Feb 20, 2025',
+            readTime: '5 min read',
+            content: `
+                <p>The promotion email said "Technical Lead." I thought it meant I'd be making all the important technical decisions. I was wrong. It meant I'd be making sure <em>other people</em> could make great technical decisions.</p>
+
+                <h3>Your Code Output Will Drop — And That's Okay</h3>
+                <p>In my first month, I tried to maintain my IC output while also running standups, doing code reviews, unblocking teammates, and meeting with product. I burned out in three weeks. The adjustment that saved me: I now write code maybe 30% of my time, and it's usually the gnarliest, most ambiguous problems — the ones where my experience has the highest leverage.</p>
+
+                <h3>Code Reviews Are Your Highest-ROI Activity</h3>
+                <p>A thorough code review takes 30 minutes. In that time, you can prevent a production bug, teach a junior engineer a pattern they'll use for years, or catch an architectural decision that would create months of tech debt. Nothing else you do has that kind of compounding return.</p>
+
+                <h3>Learn to Say "What Do You Think?"</h3>
+                <p>When a teammate asks "should we use Redux or Zustand for this?" my instinct is to answer immediately. I've learned to pause and ask "What's your recommendation?" Nine times out of ten, they have a good answer — they just needed permission to voice it.</p>
+
+                <blockquote>The best tech leads I've worked with didn't have all the answers. They asked better questions.</blockquote>
+
+                <h3>Protect Your Team's Flow State</h3>
+                <p>The number one thing that kills engineering productivity isn't bad tooling or unclear requirements — it's interruptions. As a lead, you're the shield. You attend the meetings so they don't have to. You push back on mid-sprint scope changes. You batch Slack questions into a daily thread instead of pinging people randomly.</p>
+            `
+        },
+        5: {
+            tag: 'DevOps',
+            title: 'CI/CD for React Native: Our Pipeline That Deploys in Under 10 Minutes',
+            date: 'Jan 30, 2025',
+            readTime: '6 min read',
+            content: `
+                <p>Deploying a React Native app used to be our team's least favorite ritual. Manual builds, Xcode signing issues, Play Store track selection — it would eat half a day. We automated everything and got it down to a single merge-to-main that deploys to both stores in under 10 minutes.</p>
+
+                <h3>The Stack</h3>
+                <p><strong>GitHub Actions</strong> for orchestration, <strong>Fastlane</strong> for platform-specific builds and signing, and <strong>CodePush</strong> for OTA updates that don't require store review.</p>
+
+                <h3>The Pipeline</h3>
+                <ol>
+                    <li><strong>PR opens:</strong> lint, type-check, unit tests, Detox e2e tests on emulators</li>
+                    <li><strong>PR merges to develop:</strong> build staging APK/IPA, deploy to internal testers via Firebase App Distribution</li>
+                    <li><strong>Tag release:</strong> production build, sign, upload to App Store Connect and Play Console</li>
+                </ol>
+
+                <h3>The Secret: Caching Everything</h3>
+                <p>The biggest speedup came from aggressive caching:</p>
+                <pre><code># Cache node_modules, Pods, and Gradle
+- uses: actions/cache@v3
+  with:
+    path: |
+      node_modules
+      ios/Pods
+      ~/.gradle/caches
+    key: deps-$&lbrace;&lbrace; hashFiles('**/yarn.lock') &rbrace;&rbrace;</code></pre>
+                <p>This alone cut build time from 22 minutes to 8 minutes.</p>
+
+                <h3>OTA Updates for the Win</h3>
+                <p>For JS-only changes (copy updates, minor bug fixes, style tweaks), we push over-the-air via CodePush. Users get the fix within hours instead of waiting for store review. We gate OTA updates behind feature flags so we can roll back instantly if something goes wrong.</p>
+            `
+        },
+        6: {
+            tag: 'React Native',
+            title: 'Integrating On-Device ML Into Your React Native App',
+            date: 'Jan 5, 2025',
+            readTime: '9 min read',
+            content: `
+                <p>Machine learning doesn't have to mean cloud APIs and latency. With TensorFlow Lite and a well-designed native bridge, you can run inference directly on the user's device — fast, private, and offline-capable.</p>
+
+                <h3>Why On-Device?</h3>
+                <p>For the document verification feature in Send2Corrections, we needed to classify uploaded images (ID, court order, receipt) in real-time. Sending images to a server would add 2-3 seconds of latency and raise privacy concerns for sensitive legal documents. On-device inference gives us <strong>sub-200ms classification</strong> with zero network dependency.</p>
+
+                <h3>The Architecture</h3>
+                <p>We use a three-layer approach:</p>
+                <ol>
+                    <li><strong>React Native layer:</strong> Camera integration, image preprocessing, UI</li>
+                    <li><strong>Native bridge:</strong> Passes image tensors to TFLite runtime</li>
+                    <li><strong>Model layer:</strong> Quantized MobileNetV3 fine-tuned on our document categories</li>
+                </ol>
+
+                <h3>Keeping the Model Small</h3>
+                <p>Our initial model was 23MB — too large for a bundled asset. After quantization (float32 → int8) and pruning, we got it to 3.2MB with only a 1.5% accuracy drop. We ship the model with the app binary, so there's no download step.</p>
+
+                <pre><code>// Bridge call from React Native
+const result = await NativeModules.DocumentClassifier
+  .classify(imageUri);
+
+// Returns: { category: 'court_order', confidence: 0.94 }</code></pre>
+
+                <h3>Lessons Learned</h3>
+                <p>Test on real devices early. Emulator performance is misleading — a Pixel 3a runs inference 4x slower than a Pixel 7. Build your performance budget around the lowest device tier you support, not the latest flagship.</p>
+                <p>On-device ML in React Native is absolutely production-ready. The tooling has matured, the models have gotten small enough, and the user experience improvement is substantial.</p>
+            `
+        },
+        7: {
+            tag: 'Payments',
+            title: 'Building PCI-Compliant Payment Flows in React Native: The Complete Guide',
+            date: 'May 28, 2025',
+            readTime: '10 min read',
+            content: `
+                <p>At Western Union, I led the mobile payment flow for CPay — an app processing millions of dollars in cross-border remittances daily. Building payment systems in React Native isn't just about calling a Stripe SDK. When you're handling real money at scale, the stakes are fundamentally different.</p>
+
+                <h3>Rule #1: Never Touch Card Data</h3>
+                <p>This sounds obvious, but the implementation is nuanced. We use <strong>tokenization</strong> at every layer. The card number never touches our React Native code — it goes directly from the UI input to the payment processor's SDK via a native bridge. Our JavaScript layer only ever sees a token.</p>
+                <pre><code>// What we DO NOT do:
+const cardNumber = inputRef.current.value; // NEVER
+
+// What we DO:
+// Native SDK captures card → returns token
+const token = await NativeModules.PaymentBridge
+  .tokenizeCard();
+// Token is safe to send through our API
+await api.processPayment({ token, amount });</code></pre>
+
+                <h3>3D Secure 2.0 Integration</h3>
+                <p>3DS2 is mandatory for most markets now. The challenge in React Native is the authentication flow — it opens a web-based challenge in a modal, and you need to handle the redirect back to your app correctly. We built a custom <code>WebView</code> bridge that:</p>
+                <ol>
+                    <li>Intercepts the 3DS challenge URL from the payment processor</li>
+                    <li>Renders it in a controlled WebView with strict CSP headers</li>
+                    <li>Captures the authentication result via <code>postMessage</code></li>
+                    <li>Falls back gracefully if the user cancels or the challenge times out</li>
+                </ol>
+
+                <h3>Biometric Authentication for High-Value Transfers</h3>
+                <p>For transfers above $500, we require biometric confirmation. We use <code>react-native-biometrics</code> with a fallback to device PIN. The key design decision: biometrics verify the <em>user's intent</em>, not the payment itself. The actual authorization still goes through our secure API with a signed request.</p>
+
+                <h3>Offline Transaction Queuing</h3>
+                <p>Many CPay users are in regions with unreliable connectivity. We implemented an offline-first payment queue:</p>
+                <ul>
+                    <li>Transaction is validated locally (amount limits, recipient format, balance check)</li>
+                    <li>Stored in encrypted local storage with a unique idempotency key</li>
+                    <li>Synced to the server when connectivity returns</li>
+                    <li>Server-side deduplication prevents double-charges</li>
+                </ul>
+                <p>This pattern reduced failed transactions by 34% in markets like Nigeria and the Philippines.</p>
+
+                <h3>The Real Challenge: Compliance Across 50+ Countries</h3>
+                <p>Different countries have different requirements — India's UPI, Europe's PSD2, Brazil's Pix. We built a modular payment method architecture where each country-specific flow is a plugin. The React Native layer handles orchestration; the compliance logic lives in native modules that can be updated independently.</p>
+
+                <blockquote>The best payment UX is one where the user forgets they're making a payment. Speed, trust, and clarity — that's it.</blockquote>
+            `
+        },
+        8: {
+            tag: 'React Native',
+            title: "React Native's New Architecture in Production: A 6-Month Retrospective",
+            date: 'May 22, 2025',
+            readTime: '8 min read',
+            content: `
+                <p>Six months ago, we completed the migration of our main production app to React Native's New Architecture — Fabric renderer, TurboModules, and Bridgeless mode. Here's what actually happened.</p>
+
+                <h3>The Migration Was Not "Just Enable a Flag"</h3>
+                <p>Despite what the docs suggest, migrating a 200+ screen app with 40+ native modules was a multi-month effort. The biggest blockers weren't in our code — they were in third-party libraries that hadn't updated their native implementations.</p>
+                <p>Our approach: migrate in phases. We ran Old and New Architecture side-by-side using the interop layer for 8 weeks before cutting over completely. This let us catch regressions gradually instead of in one terrifying deploy.</p>
+
+                <h3>What Actually Improved</h3>
+                <p><strong>Rendering performance:</strong> Fabric's synchronous rendering eliminated the "flash of stale content" we'd see on heavy screens. Our transaction history screen, which renders 500+ items, went from noticeable jank to butter-smooth. Measured improvement: <strong>P95 frame time dropped from 22ms to 11ms</strong>.</p>
+                <p><strong>Startup time:</strong> TurboModules with lazy initialization meant we only load native modules when they're first called. 12 of our 40 modules are rarely used — deferring them shaved 400ms off cold start.</p>
+                <p><strong>Type safety:</strong> Codegen from TypeScript specs to native code eliminated an entire category of bridge-related crashes. We had 23 crash reports per week from malformed bridge calls. After migration: zero.</p>
+
+                <h3>What Broke</h3>
+                <p>React Native Reanimated v2 worklets behaved differently under Fabric. Animations that looked perfect on the old architecture had subtle timing issues. We had to rewrite 8 complex animation sequences.</p>
+                <p>Some community libraries simply didn't work. We had to fork two packages and write our own Fabric-compatible renderers. This is the hidden cost nobody talks about.</p>
+
+                <h3>Was It Worth It?</h3>
+                <p>Absolutely. The performance gains are real, the crash reduction is significant, and the developer experience with Codegen is a genuine step forward. But plan for 3-4 months of migration work for a large app, not the "weekend project" some blog posts promise.</p>
+            `
+        },
+        9: {
+            tag: 'Security',
+            title: 'Securing Fintech Apps: Biometrics, Certificate Pinning, and Runtime Tampering Detection',
+            date: 'May 10, 2025',
+            readTime: '9 min read',
+            content: `
+                <p>When your app moves money, security isn't a feature — it's a survival requirement. One breach and you lose user trust forever. Here's the security playbook I've refined across multiple fintech projects.</p>
+
+                <h3>Layer 1: Certificate Pinning</h3>
+                <p>SSL/TLS is not enough. Without certificate pinning, a man-in-the-middle attack with a rogue CA certificate can intercept all API traffic. We pin both the leaf certificate and an intermediate CA as backup:</p>
+                <pre><code>// react-native-ssl-pinning config
+{
+  "domains": {
+    "api.ourapp.com": {
+      "pins": [
+        "sha256/AAAAAAAAAA=", // leaf
+        "sha256/BBBBBBBBBB="  // intermediate backup
+      ],
+      "includeSubdomains": true
+    }
+  }
+}</code></pre>
+                <p>Critical: implement a pin rotation strategy. If your only pinned cert expires or is compromised, every installed app stops working. We rotate quarterly and always have next quarter's cert pre-pinned.</p>
+
+                <h3>Layer 2: Jailbreak and Root Detection</h3>
+                <p>Rooted/jailbroken devices are attack surfaces. We detect them at runtime and restrict sensitive operations (not block the app entirely — that frustrates legitimate power users). We check for:</p>
+                <ul>
+                    <li>Presence of Cydia, Magisk, or su binaries</li>
+                    <li>Writable system partitions</li>
+                    <li>Hooking frameworks (Frida, Xposed)</li>
+                    <li>Debugger attachment</li>
+                </ul>
+                <p>On detection, high-value transfers are blocked and the user is prompted to use a secure device.</p>
+
+                <h3>Layer 3: Encrypted Local Storage</h3>
+                <p>AsyncStorage is plaintext. For any sensitive data (tokens, cached user info, transaction drafts), we use <code>react-native-keychain</code> backed by iOS Keychain and Android Keystore. Encryption keys are hardware-bound — they can't be extracted even with root access.</p>
+
+                <h3>Layer 4: Runtime Integrity</h3>
+                <p>We implemented code integrity checks that verify the app binary hasn't been tampered with at launch. If someone reverse-engineers the APK, modifies it, and re-signs it, our integrity check catches it. Combined with Google's Play Integrity API and Apple's App Attest, we can verify the app is genuine before processing any transaction.</p>
+
+                <blockquote>Security is layers. No single measure is unbreakable, but stacking them makes the cost of attack exceed the value of the target.</blockquote>
+            `
+        },
+        10: {
+            tag: 'Payments',
+            title: 'Cross-Border Payments UX: Designing for Emerging Markets',
+            date: 'Apr 15, 2025',
+            readTime: '7 min read',
+            content: `
+                <p>Building a payment app for users in San Francisco is one thing. Building one that works for a migrant worker in Lagos sending money to family in a rural village is an entirely different challenge. At Western Union, I learned that "good UX" means radically different things in different markets.</p>
+
+                <h3>Bandwidth Is a Feature Constraint</h3>
+                <p>In many African and Southeast Asian markets, users are on 2G/3G connections paying per-MB for data. Every kilobyte matters. Our optimizations:</p>
+                <ul>
+                    <li><strong>API payloads:</strong> Compressed with gzip, stripped of all non-essential fields. Average API response: 2KB.</li>
+                    <li><strong>Images:</strong> WebP at 60% quality, lazy loaded, with blurhash placeholders (40 bytes each).</li>
+                    <li><strong>Offline mode:</strong> The entire transaction flow works offline. Data syncs when connectivity returns.</li>
+                </ul>
+
+                <h3>Currency Display Is Harder Than You Think</h3>
+                <p>Showing "₦45,000.00" to a Nigerian user and "$95.50" to an American user sounds simple until you're handling 130+ currencies with different decimal conventions, thousand separators, and symbol placements. We built a currency formatting engine that handles:</p>
+                <pre><code>formatCurrency(45000, 'NGN') → "₦45,000.00"
+formatCurrency(95.5, 'USD')  → "$95.50"
+formatCurrency(1234, 'JPY')  → "¥1,234"  // no decimals
+formatCurrency(1234.5, 'BHD') → "BD 1,234.500" // 3 decimals</code></pre>
+
+                <h3>Trust Signals Matter More Than Aesthetics</h3>
+                <p>In emerging markets, users are often wary of digital payments. We added explicit trust signals throughout the flow:</p>
+                <ul>
+                    <li>Real-time exchange rate with "locked for 30 seconds" countdown</li>
+                    <li>Clear fee breakdown before confirmation — no hidden charges</li>
+                    <li>SMS confirmation to both sender and recipient</li>
+                    <li>Transaction tracking with estimated delivery time</li>
+                </ul>
+                <p>After adding these signals, completion rate in the Philippines went from 62% to 84%.</p>
+
+                <h3>Accessibility in Low-Literacy Markets</h3>
+                <p>Not all users can read fluently. We use icon-heavy interfaces, color-coded status indicators, and audio confirmation for completed transactions. The "send money" flow can be completed with just 4 taps and minimal text input — recipient selection from contacts, amount on a numpad, confirm with biometrics.</p>
+
+                <blockquote>The best payment apps don't feel like technology. They feel like handing cash to someone you trust.</blockquote>
+            `
+        }
+    };
+
+    // Open post
+    const overlay = document.getElementById('postOverlay');
+    const postHeader = document.getElementById('postHeader');
+    const postContent = document.getElementById('postContent');
+    const postClose = document.getElementById('postClose');
+
+    blogCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const postId = card.dataset.post;
+            const post = posts[postId];
+            if (!post) return;
+
+            postHeader.innerHTML = `
+                <span class="blog-card-tag">${post.tag}</span>
+                <h2>${post.title}</h2>
+                <div class="post-meta">
+                    <span>${post.date}</span>
+                    <span>·</span>
+                    <span>${post.readTime}</span>
+                </div>
+            `;
+            postContent.innerHTML = post.content;
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    postClose.addEventListener('click', closePost);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closePost();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closePost();
+    });
+
+    function closePost() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+</script>
+</body>
+</html>
